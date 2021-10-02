@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-renewedmood-dev-180517-authRole",
+      "UnauthRoleArn": "arn:aws:iam::617623427215:role/amplify-renewedmood-dev-180517-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::617623427215:role/amplify-renewedmood-dev-180517-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-renewedmood-dev-180517-deployment",
+      "UnauthRoleName": "amplify-renewedmood-dev-180517-unauthRole",
+      "StackName": "amplify-renewedmood-dev-180517",
+      "StackId": "arn:aws:cloudformation:us-east-1:617623427215:stack/amplify-renewedmood-dev-180517/2c29bc50-20a8-11ec-a103-12c05000775d",
+      "AmplifyAppId": "d3oebvzards5ub"
+    },
+    "categories": {
+      "auth": {
+        "renewedmooddc9b567c": {}
+      }
+    }
+  }
+}

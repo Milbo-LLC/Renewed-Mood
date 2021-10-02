@@ -1,0 +1,76 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-renewedmood-dev-180517-authRole",
+      "UnauthRoleArn": "arn:aws:iam::617623427215:role/amplify-renewedmood-dev-180517-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::617623427215:role/amplify-renewedmood-dev-180517-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-renewedmood-dev-180517-deployment",
+      "UnauthRoleName": "amplify-renewedmood-dev-180517-unauthRole",
+      "StackName": "amplify-renewedmood-dev-180517",
+      "StackId": "arn:aws:cloudformation:us-east-1:617623427215:stack/amplify-renewedmood-dev-180517/2c29bc50-20a8-11ec-a103-12c05000775d",
+      "AmplifyAppId": "d3oebvzards5ub"
+    }
+  },
+  "auth": {
+    "renewedmooddc9b567c": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "loginMechanisms": [],
+        "signupAttributes": [
+          "BIRTHDATE",
+          "EMAIL",
+          "FAMILY_NAME",
+          "GENDER",
+          "NAME",
+          "PHONE_NUMBER"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-renewedmood-dev-180517-deployment/amplify-cfn-templates/auth/renewedmooddc9b567c-cloudformation-template.yml",
+        "logicalId": "authrenewedmooddc9b567c"
+      },
+      "lastPushTimeStamp": "2021-09-29T01:40:13.441Z",
+      "output": {
+        "UserPoolId": "us-east-1_sWdPtk76E",
+        "AppClientIDWeb": "18cebldgf0mvnrjhk6vckidc8e",
+        "AppClientID": "4fbamo53v121i54gfl7n1n5ov3",
+        "IdentityPoolId": "us-east-1:390f18f7-5099-4d74-9d53-587d6cece4c6",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:617623427215:userpool/us-east-1_sWdPtk76E",
+        "IdentityPoolName": "renewedmooddc9b567c_identitypool_dc9b567c__dev",
+        "UserPoolName": "renewedmooddc9b567c_userpool_dc9b567c"
+      },
+      "lastPushDirHash": "QemTJIzdoueqxSDshVJqld5iI0M="
+    }
+  },
+  "storage": {
+    "renewedmood": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-renewedmood-dev-180517-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+        "logicalId": "storagerenewedmood"
+      },
+      "lastPushTimeStamp": "2021-09-29T01:40:13.450Z",
+      "output": {
+        "BucketName": "renewedmood-bucket180517-dev",
+        "Region": "us-east-1"
+      },
+      "lastPushDirHash": "QFgnBHyCvsqJUizK2WGhWOeL3oY="
+    }
+  }
+}
