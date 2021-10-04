@@ -113,7 +113,7 @@ export default function AudioEntryView({changeMedia, media, username}) {
 
         AsyncStorageSave(entryData, entryData['id'].toString(), 'Audio')
 
-        console.log('\n\nUSERNAME from audioEntryView: ', username)
+        // console.log('\n\nUSERNAME from audioEntryView: ', username)
         dispatch(addEntry({
             id: Date.now(),
             user: username,

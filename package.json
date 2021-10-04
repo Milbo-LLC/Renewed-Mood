@@ -38,6 +38,7 @@
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.5",
     "react-speech-recognition": "^3.9.0",
+    "redux-thunk": "^2.3.0",
     "rn-animated-progress-circle": "^1.0.0"
   },
   "devDependencies": {

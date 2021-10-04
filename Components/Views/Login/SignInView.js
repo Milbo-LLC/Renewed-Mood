@@ -16,12 +16,16 @@ import { Ionicons } from '@expo/vector-icons';
 // Import library for AsyncStorage (Used for data persistence)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorageGet from './../../AsyncStorage/AsyncStorageGet';
+import { updatePersisted } from './../../Redux/persistedSlice';
 
 export default function SignInView({ navigation }) {
 
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    const dispatch = useDispatch();
+    const persistedState = useSelector((state) => state.persisted);
     // const dispatch = useDispatch();
 
     const handleBackButton = () => {
@@ -79,8 +83,22 @@ export default function SignInView({ navigation }) {
             console.log('Error signing in: ', error)
         }
     }
-    
-    AsyncStorageGet()
+
+    // console.log('PersistedState.isPersisted: ', persistedState.isPersisted)
+    // if(persistedState.isPersisted === false) {
+    //     AsyncStorageGet().then(() => {
+    //         dispatchUpdatePersisted(dispatch)
+    //     })
+    // }
+
+    // // Local data persistence
+    // if(persistedState.isPersisted === false) {
+    //     AsyncStorageGet(false).then(() => {
+    //         dispatch(updatePersisted())
+    //     })
+    // } else {
+    //     AsyncStorageGet(true)
+    // }
 
     return(
 

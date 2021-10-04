@@ -11,8 +11,10 @@ export default async function AsyncStorageSave(data, key, type) {
     // console.log('\nType: ', type)
     try {
         const jsonData = JSON.stringify(data)
+        console.log('Data: ', jsonData)
         await AsyncStorage.setItem(key, jsonData)
     } catch (error) {
         console.log('Error storing data to Async Storage: ', error)
     }
+    console.log('\nLeaving AsyncStorageSave.\n')
 }

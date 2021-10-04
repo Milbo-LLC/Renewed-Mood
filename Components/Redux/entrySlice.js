@@ -1,4 +1,36 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+
+// const updateEntries = createAsyncThunk(
+//     'entry/updateEntries',
+//     async (thunkAPI, entryData) => {
+//         await thunkAPI.dispatch(addEntry({
+//             user: entryData.user,
+//             id: entryData.id,
+//             awsPath: entryData.awsPath,
+//             type: entryData.type,
+//             title: entryData.title,
+//             entry: entryData.entry,
+//             moodRating: entryData.moodRating,
+//             joy: entryData.joy,
+//             joyNote: entryData.joyNote,
+//             sadness: entryData.sadness,
+//             sadnessNote: entryData.sadnessNote,
+//             trust: entryData.trust,
+//             trustNote: entryData.trustNote,
+//             disgust: entryData.disgust,
+//             disgustNote: entryData.disgustNote,
+//             fear: entryData.fear,
+//             fearNote: entryData.fearNote,
+//             anger: entryData.anger,
+//             angerNote: entryData.angerNote,
+//             surprise: entryData.surprise,
+//             surpriseNote: entryData.surpriseNote,
+//             anticipation: entryData.anticipation,
+//             anticipationNote: entryData.anticipationNote,
+//         }))
+//     }
+// )
 
 const entrySlice = createSlice({
     name: 'entry',
@@ -40,6 +72,17 @@ const entrySlice = createSlice({
         deleteEntry: (state, action) => {
             return state.filter((item) => item.id !== action.payload.id)
         },
+        // extraReducers: {
+        //     [updateEntries.pending]: () => {
+        //         console.log('Update Entries pending.')
+        //     },
+        //     [updateEntries.fulfilled]: () => {
+        //         console.log('Update Entries fulfilled.')
+        //     },
+        //     [updateEntries.rejected]: () => {
+        //         console.log('Update Entries rejected.')
+        //     }
+        // },
     },
 });
 
