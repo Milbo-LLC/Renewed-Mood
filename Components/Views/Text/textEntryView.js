@@ -19,6 +19,8 @@ import TextEntryItem from './textEntryItem';
 import MediaEntryHeader from '../MediaEntryHeader';
 
 import AsyncStorageSave from '../../AsyncStorage/AsyncStorageSave';
+import AsyncStorageGet from '../../AsyncStorage/AsyncStorageGet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TextEntryView({changeMedia, media, username}) {
     const [id, setID] = useState('')
@@ -62,15 +64,17 @@ export default function TextEntryView({changeMedia, media, username}) {
         console.log('ID Date: ', idDate)
         let idString = idDate.slice()
         console.log('ID STRING 1: ', idString)
-        entryData['id'] = Date.now(),
-        entryData['username'] = username, 
-        entryData['awsPath'] = 'Entries/' + username + '/Text/text' + textUploadCounter.toString() + '.txt', 
-        entryData['type'] = 'text', 
-        entryData['entry'] = entryText,
-        AsyncStorageSave(entryData, entryData['id'].toString(), 'Text')
+        entryData['id'] = Date.now()
+        entryData['username'] = username
+        entryData['awsPath'] = 'Entries/' + username + '/Text/text' + textUploadCounter.toString() + '.txt'
+        entryData['type'] = 'text'
+        entryData['entry'] = entryText
+        // AsyncStorage.clear()
+        AsyncStorageSave(entryData, entryData['id'].toString())
+        AsyncStorageGet()
         if( entryText !== ''){
             dispatch(addEntry({
-                id: idString,
+                id: Date.now(),
                 username: username,
                 awsPath: 'Entries/' + username + '/Text/text' + textUploadCounter.toString() + '.txt',
                 type: 'text',

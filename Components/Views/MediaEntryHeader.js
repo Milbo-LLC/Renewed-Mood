@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity, Platform, Alert, TextInput, A
 
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-// import { back } from 'react-native/Libraries/Animated/src/Easing';
 
+import { useNavigation } from '@react-navigation/native'
 
 export default function MediaEntryHeader({changeMedia, media, audioButtonColor, videoButtonColor, textButtonColor }) {
+
+    const navigation = useNavigation();
 
     return (
         <View style={styles.MediaEntryHeaderContainer}>
@@ -16,8 +18,7 @@ export default function MediaEntryHeader({changeMedia, media, audioButtonColor, 
                 <View style={styles.MediaEntryHeaderLeftButtonsContainer}>
                     <TouchableOpacity
                         style={styles.MediaButton}
-                        // onPress={() => changeMedia('Video')}
-                        // onPress={() => handleMediaButtonPress('Video')}
+                        onPress={() => navigation.navigate('ProfileView')}
                     >
                         <View style={[styles.MediaButtonBorder, {backgroundColor: 'lightgrey'}]}>
                             <MaterialCommunityIcons name="account" size={24} color="black" />

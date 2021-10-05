@@ -221,6 +221,7 @@ export default function SignUpView({ navigation }) {
                             <TextInput 
                                 style={styles.SignUpInputTextInput}
                                 onChangeText={(text) => handleTextInput(text, 'name')}
+                                value={name}
                             ></TextInput>
                         </View>
 
@@ -230,6 +231,7 @@ export default function SignUpView({ navigation }) {
                             <TextInput 
                                 style={styles.SignUpInputTextInput}
                                 onChangeText={(text) => handleTextInput(text, 'family_name')}
+                                value={family_name}
                             ></TextInput>
                         </View>
                         
@@ -389,6 +391,7 @@ export default function SignUpView({ navigation }) {
                             <TextInput 
                                 style={styles.SignUpInputTextInput}
                                 onChangeText={(text) => handleTextInput(text, 'username')}
+                                value={username}
                             ></TextInput>
                         </View>
 
@@ -398,6 +401,7 @@ export default function SignUpView({ navigation }) {
                             <TextInput 
                                 style={styles.SignUpInputTextInput}
                                 onChangeText={(text) => handleTextInput(text, 'email')}
+                                value={email}
                             ></TextInput>
                         </View>
 
@@ -407,6 +411,7 @@ export default function SignUpView({ navigation }) {
                             <TextInput 
                                 style={styles.SignUpInputTextInput}
                                 onChangeText={(text) => handleTextInput(text, 'phonenumber')}
+                                // value={phone_number}
                             ></TextInput>
                         </View>
 
@@ -418,6 +423,7 @@ export default function SignUpView({ navigation }) {
                                     style={styles.SignUpInputTextInput} 
                                     secureTextEntry={secureTextEntry}
                                     onChangeText={(text) => handleTextInput(text, 'password')}
+                                    value={password}
                                 ></TextInput> 
                                 <TouchableOpacity 
                                     style={styles.PasswordTextHideButton}
@@ -488,6 +494,7 @@ export default function SignUpView({ navigation }) {
                             <TextInput 
                                 style={styles.SignUpInputTextInput}
                                 onChangeText={(text) => handleTextInput(text, 'email')}
+                                value={email}
                             ></TextInput>
                         </View>
 

@@ -106,12 +106,13 @@ export default function VideoEntryView({changeMedia, media, username}) {
     const saveVideo = (videoURI, awsPath) => {
         setVideoLink(videoURI.toString())
         // console.log('AWS PATH: ', awsPath)
-        entryData['id'] = Date.now(),
-        entryData['username'] = username, 
-        entryData['awsPath'] = awsPath, 
-        entryData['type'] = 'video', 
-        entryData['entry'] = videoURI,
-        AsyncStorageSave(entryData, entryData['id'].toString(), 'Video')
+        entryData['id'] = Date.now()
+        entryData['username'] = username
+        entryData['awsPath'] = awsPath
+        entryData['type'] = 'video'
+        entryData['entry'] = videoURI
+        AsyncStorageSave(entryData, entryData['id'].toString())
+        AsyncStorageGet()
         dispatch(addEntry({
             id: Date.now(),
             username: username,
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 80,
         height: 80,
-        borderColor: 'black',
+        borderColor: 'white',
         borderWidth: 7,
         borderRadius: 100,
         alignSelf: 'center',

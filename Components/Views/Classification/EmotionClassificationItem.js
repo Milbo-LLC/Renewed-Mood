@@ -17,6 +17,7 @@ import Slider from '@react-native-community/slider'
 import { Ionicons } from '@expo/vector-icons';
 
 import AsyncStorageSave from './../../AsyncStorage/AsyncStorageSave';
+import AsyncStorageGet from './../../AsyncStorage/AsyncStorageGet';
 
 export default function EmotionClassificationItem({ emotions, type, username, title, entry, path, moodRating}) {
     
@@ -173,7 +174,8 @@ export default function EmotionClassificationItem({ emotions, type, username, ti
         entryData['anticipation'] = anticipationIntensity
         entryData['anticipationNote'] = anticipationNote
 
-        AsyncStorageSave(entryData, path, type)
+        AsyncStorageSave(entryData, entryData['id'].toString())
+        // AsyncStorageGet()
 
         dispatch(addEntry({
             id: Date.now(),
@@ -214,8 +216,8 @@ export default function EmotionClassificationItem({ emotions, type, username, ti
         console.log('Classification Path: ', classificationPath)
 
         reduxSave()
-        console.log('HERE\n\n\n')
-        console.log('Classification Dict', classificationDict)        
+        // console.log('HERE\n\n\n')
+        // console.log('Classification Dict', classificationDict)        
 
         classificationDict['Path to Entry'] = path
         classificationDict['Mood Rating'] = moodRating

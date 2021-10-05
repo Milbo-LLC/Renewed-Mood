@@ -25,7 +25,8 @@ export default function SignInView({ navigation }) {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch();
-    const persistedState = useSelector((state) => state.persisted);
+    const entriesInRedux = useSelector((state) => state.entry)
+    // const persistedState = useSelector((state) => state.persisted);
     // const dispatch = useDispatch();
 
     const handleBackButton = () => {
@@ -99,6 +100,12 @@ export default function SignInView({ navigation }) {
     // } else {
     //     AsyncStorageGet(true)
     // }
+
+    console.log('Number of entries in entriesInRedux: ', entriesInRedux.length)
+    if(entriesInRedux.length === 0) {
+        AsyncStorageGet()
+    }
+    
 
     return(
 

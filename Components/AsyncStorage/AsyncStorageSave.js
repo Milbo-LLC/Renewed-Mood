@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, Vibratio
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default async function AsyncStorageSave(data, key, type) {
+export default async function AsyncStorageSave(data, key) {
 
     console.log('\nInside of AsyncStorageSave.\n')
     // console.log('\nData: ', data)

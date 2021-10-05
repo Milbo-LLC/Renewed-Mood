@@ -22,6 +22,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import AsyncStorageSave from '../../AsyncStorage/AsyncStorageSave';
 import AsyncStorageGet from '../../AsyncStorage/AsyncStorageGet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AudioEntryView({changeMedia, media, username}) {
 
@@ -111,7 +112,10 @@ export default function AudioEntryView({changeMedia, media, username}) {
         entryData['type'] = 'audio', 
         entryData['entry'] = uri,
 
-        AsyncStorageSave(entryData, entryData['id'].toString(), 'Audio')
+        // AsyncStorage.clear()
+        AsyncStorageSave(entryData, entryData['id'].toString())
+        AsyncStorageGet()
+        // console.log('Entry Data in Audio Entry View: ', entryDataInAsyncStorage)
 
         // console.log('\n\nUSERNAME from audioEntryView: ', username)
         dispatch(addEntry({

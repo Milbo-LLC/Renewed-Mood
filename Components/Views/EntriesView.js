@@ -55,261 +55,15 @@ export default function EntriesView( param ) {
     // console.log('entries: ', entries)
     const [entriesShowing, setEntriesShowing] = useState(entries)
     const [displayDaysEntries, setDisplayDaysEntries] = useState(true)
+    const [daysNotToDisplay, setDaysNotToDisplay] = useState([])
     const [dataPersisted, setDataPersisted] = useState({})
     
     const [rerender, setRerender] = useState(0)
     const [monthDictHook, setMonthDictHook] = useState()
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
-    // const importData = async() => {
-    //     // AsyncStorage.clear()
-    //     try {
-    //         const keys = await AsyncStorage.getAllKeys();
-    //         const data = await AsyncStorage.multiGet(keys)
-    //         return data
-    //     } catch (error) {
-    //         console.log('Error importing data from AsyncStorage: ', error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     // const dataPersisted = importData()
-    //     console.log('IN useEffect.')
-    //     setDataPersisted(importData())
-    // }, [])
-
-    // if(dataPersisted._W !== null && dataPersisted._W !== undefined){ 
-    //     // console.log('dataPersisted._W: ', dataPersisted._W)
-    //     const dataPersistedEntries = []
-    //     for(let i = 0; i < dataPersisted._W.length; i++){
-    //         // if(dataPersisted._W[i])
-    //         // console.log('dataPersisted._W ', i, ': ', dataPersisted._W[i][0].split('/')[1])
-    //         if(dataPersisted._W[i][0].split('/')[0] === 'Entries' && dataPersisted._W[i][0].split('/')[1] === username){
-    //             dataPersistedEntries.push(JSON.parse(dataPersisted._W[i][1]))
-    //             // console.log('Entry: ', JSON.parse(dataPersisted._W[i][1]))
-    //             // console.log('ID: ', JSON.parse(dataPersisted._W[i][1].id))
-    //             // name: ', JSON.parse(dataPersisted._W[i][1].username))
-    //             // console.log('awsPath: ', JSON.parse(dataPersisted._W[i][1].awsPath))
-    //             // console.log('type: ', JSON.parse(dataPersisted._W[i][1].type))
-    //             // console.log('entry: ', JSON.parse(dataPersisted._W[i][1].entry))
-    //             // dispatch(addEntry({
-    //             //     id: Date.now(),
-    //             //     username: username,
-    //             //     awsPath: awsPath,
-    //             //     type: 'audio',
-    //             //     entry: uri,
-    //             // }))
-    //         }
-    //         // console.log('dataPersistedEntries 1: ', dataPersistedEntries)
-    //         function compare(a, b) {
-    //             return a.id - b.id;
-    //         }
-    //         dataPersistedEntries.sort(compare)
-    //         // console.log('dataPersistedEntries 2: ', dataPersistedEntries)
-            
-    //         for(let i = 0; i < dataPersistedEntries.length; i++){
-    //             // console.log('data ID ', i, ': ',dataPersistedEntries[i].id)
-    //             const user = null, id = null, awsPath = null, type = null, title = null, entry = null
-    //             const moodRating = null, joyIntensity = null, joyNote = null, trustIntensity = null, trustNote = null
-    //             const fearIntensity = null, fearNote = null, surpriseIntensity = null, surpriseNote = null
-    //             const sadnessIntensity = null, sadnessNote = null, disgustIntensity = null, disgustNote = null
-    //             const angerIntensity = null, angerNote = null, anticipationIntensity = null, anticipationNote = null
-
-    //             if(dataPersistedEntries[i].username !== undefined){
-    //                 // console.log('User: ', dataPersistedEntries[i].username)
-    //                 user = dataPersistedEntries[i].username
-    //                 // console.log('User: ', user)
-    //             }
-    //             if(dataPersistedEntries[i].id !== undefined){
-    //                 // console.log('ID: ', dataPersistedEntries[i].id)
-    //                 id = dataPersistedEntries[i].id
-    //                 // console.log('ID: ', id)
-    //             }
-    //             if(dataPersistedEntries[i].awsPath !== undefined){
-    //                 // console.log('Path: ', dataPersistedEntries[i].awsPath)
-    //                 awsPath = dataPersistedEntries[i].awsPath
-    //                 // console.log('AWSPath: ', awsPath)
-    //             }
-    //             if(dataPersistedEntries[i].type !== undefined){
-    //                 // console.log('Type: ', dataPersistedEntries[i].type)
-    //                 type = dataPersistedEntries[i].type
-    //                 // console.log('Type: ', type)
-    //             }
-    //             if(dataPersistedEntries[i].title !== undefined){
-    //                 // console.log('Title: ', dataPersistedEntries[i].title)
-    //                 title = dataPersistedEntries[i].title
-    //             }
-    //             if(dataPersistedEntries[i].entry !== undefined){
-    //                 // console.log('Entry: ', dataPersistedEntries[i].entry)
-    //                 entry = dataPersistedEntries[i].entry
-    //             }
-    //             if(dataPersistedEntries[i].moodRating !== undefined){
-    //                 // console.log('Entry: ', dataPersistedEntries[i].entry)
-    //                 moodRating = dataPersistedEntries[i].moodRating
-    //             }
-    //             if(dataPersistedEntries[i].joy !== undefined){
-    //                 // console.log('Joy Intensity: ', dataPersistedEntries[i].joy)
-    //                 joyIntensity = dataPersistedEntries[i].joy
-    //             }
-    //             if(dataPersistedEntries[i].joyNote !== undefined){
-    //                 // console.log('Joy Note: ', dataPersistedEntries[i].joyNote)
-    //                 joyNote = dataPersistedEntries[i].joyNote
-    //             }
-    //             if(dataPersistedEntries[i].trust !== undefined){
-    //                 // console.log('Trust Intensity: ', dataPersistedEntries[i].trust)
-    //                 trustIntensity = dataPersistedEntries[i].trust
-    //             }
-    //             if(dataPersistedEntries[i].trustNote !== undefined){
-    //                 // console.log('Trust Note: ', dataPersistedEntries[i].trustNote)
-    //                 trustNote = dataPersistedEntries[i].trustNote
-    //             }
-    //             if(dataPersistedEntries[i].fear !== undefined){
-    //                 // console.log('Fear Intensity: ', dataPersistedEntries[i].fear)
-    //                 fearIntensity = dataPersistedEntries[i].fear
-    //             }
-    //             if(dataPersistedEntries[i].fearNote !== undefined){
-    //                 // console.log('Fear Note: ', dataPersistedEntries[i].fearNote)
-    //                 fearNote = dataPersistedEntries[i].fearNote
-    //             }
-    //             if(dataPersistedEntries[i].surprise !== undefined){
-    //                 // console.log('Surprise Intensity: ', dataPersistedEntries[i].surprise)
-    //                 surpriseIntensity = dataPersistedEntries[i].surprise
-    //             }
-    //             if(dataPersistedEntries[i].surpriseNote !== undefined){
-    //                 // console.log('Surprise  Note: ', dataPersistedEntries[i].surpriseNote)
-    //                 surpriseNote = dataPersistedEntries[i].surpriseNote
-    //             }
-    //             if(dataPersistedEntries[i].sadness !== undefined){
-    //                 // console.log('Sadness Intensity: ', dataPersistedEntries[i].sadness)
-    //                 sadnessIntensity = dataPersistedEntries[i].sadness
-    //             }
-    //             if(dataPersistedEntries[i].sadnessNote !== undefined){
-    //                 // console.log('Sadness Note: ', dataPersistedEntries[i].sadnessNote)
-    //                 sadnessNote = dataPersistedEntries[i].sadnessNote
-    //             }
-    //             if(dataPersistedEntries[i].disgust !== undefined){
-    //                 // console.log('Disgust Intensity: ', dataPersistedEntries[i].disgust)
-    //                 disgustIntensity = dataPersistedEntries[i].disgust
-    //             }
-    //             if(dataPersistedEntries[i].disgustNote !== undefined){
-    //                 // console.log('Disgust Note: ', dataPersistedEntries[i].disgustNote)
-    //                 disgustNote = dataPersistedEntries[i].disgustNote
-    //             }
-    //             if(dataPersistedEntries[i].anger !== undefined){
-    //                 // console.log('Anger Intensity: ', dataPersistedEntries[i].anger)
-    //                 angerIntensity = dataPersistedEntries[i].anger
-    //             }
-    //             if(dataPersistedEntries[i].angerNote !== undefined){
-    //                 // console.log('Anger Note: ', dataPersistedEntries[i].angerNote)
-    //                 angerNote = dataPersistedEntries[i].angerNote
-    //             }
-    //             if(dataPersistedEntries[i].anticipation !== undefined){
-    //                 // console.log('Anticipation Intensity: ', dataPersistedEntries[i].anticipation)
-    //                 anticipationIntensity = dataPersistedEntries[i].anticipation
-    //             }
-    //             if(dataPersistedEntries[i].anticipationNote !== undefined){
-    //                 // console.log('Anticipation Note: ', dataPersistedEntries[i].anticipationNote)
-    //                 anticipationNote = dataPersistedEntries[i].anticipationNote
-    //             }
-                
-
-    //             const doesEntryExist = (entry) => entry.id === id
-
-    //             // console.log('dataPersistedEntries ID', i, ': ', dataPersistedEntries[i].id)
-    //             // console.log('ID: ', id)
-                
-    //             const dispatchPersistedDataPromise = (
-    //                 id, user, awsPath, type, title, entry, moodRating,
-    //                 joyIntensity, joyNote, trustIntensity, trustNote,
-    //                 fearIntensity, fearNote, surpriseIntensity, surpriseNote,
-    //                 sadnessIntensity, sadnessNote, disgustIntensity, disgustNote,
-    //                 angerIntensity, angerNote, anticipationIntensity, anticipationNote, dispatch) => new Promise((resolve, reject) => {
-    //                 console.log('\nIn dispatchPersistedDataPromise\n')
-    //                 dispatch(addEntry({
-    //                     id: id,
-    //                     user: user,
-    //                     awsPath: awsPath,
-    //                     type: type,
-    //                     title: title,
-    //                     entry: entry,
-    //                     moodRating: moodRating,
-    //                     joy: joyIntensity,
-    //                     joyNote: joyNote,
-    //                     trust: trustIntensity,
-    //                     trustNote: trustNote,
-    //                     fear: fearIntensity,
-    //                     fearNote: fearNote,
-    //                     surprise: surpriseIntensity,
-    //                     surpriseNote: surpriseNote,
-    //                     sadness: sadnessIntensity,
-    //                     sadnessNote: sadnessNote,
-    //                     disgust: disgustIntensity,
-    //                     disgustNote: disgustNote,
-    //                     anger: angerIntensity,
-    //                     angerNote: angerNote,
-    //                     anticipation: anticipationIntensity,
-    //                     anticipationNote: anticipationNote,
-    //                 }))
-    //                 resolve()
-    //             })
-                
-    //             for(let i = 0; i < entries.length; i++){
-    //                 // console.log('Entry ', i, ': ', entries[i].id)
-    //                 if(Math.abs(id-entries[i].id) < 1000) {
-    //                     console.log("ID's Match:")
-    //                     console.log(id)
-    //                     console.log(entries[i].id)
-    //                 } else {
-    //                     const resolved = dispatchPersistedDataPromise(
-    //                         id, user, awsPath, type, title, entry, moodRating,
-    //                         joyIntensity, joyNote, trustIntensity, trustNote,
-    //                         fearIntensity, fearNote, surpriseIntensity, surpriseNote,
-    //                         sadnessIntensity, sadnessNote, disgustIntensity, disgustNote,
-    //                         angerIntensity, angerNote, anticipationIntensity, anticipationNote, dispatch
-    //                     )
-    //                     console.log('resolved: ', resolved)
-    //                     console.log("ID's DO NOT Match:")
-    //                     console.log(id)
-    //                     console.log(entries[i].id)
-    //                 }
-    //             }
-                
-    //             // console.log('ID: ', id )
-    //             // if(entries.some(doesEntryExist) === false){
-    //                 // dispatch(addEntry({
-    //                 //     id: id,
-    //                 //     user: user,
-    //                 //     awsPath: awsPath,
-    //                 //     type: type,
-    //                 //     title: title,
-    //                 //     entry: entry,
-    //                 //     moodRating: moodRating,
-    //                 //     joy: joyIntensity,
-    //                 //     joyNote: joyNote,
-    //                 //     trust: trustIntensity,
-    //                 //     trustNote: trustNote,
-    //                 //     fear: fearIntensity,
-    //                 //     fearNote: fearNote,
-    //                 //     surprise: surpriseIntensity,
-    //                 //     surpriseNote: surpriseNote,
-    //                 //     sadness: sadnessIntensity,
-    //                 //     sadnessNote: sadnessNote,
-    //                 //     disgust: disgustIntensity,
-    //                 //     disgustNote: disgustNote,
-    //                 //     anger: angerIntensity,
-    //                 //     angerNote: angerNote,
-    //                 //     anticipation: anticipationIntensity,
-    //                 //     anticipationNote: anticipationNote,
-    //                 // }))
-    //             // }
-                
-
-    //         }
-            
-    //     }
-    // }
-    
     // console.log('dataPersisted._W: ', dataPersisted._W)
 
     for(let i = 0; i < entries.length; i++) {
@@ -387,15 +141,23 @@ export default function EntriesView( param ) {
         // let displayDaysEntries = true
         // setDisplayDaysEntries(true)
         
-        const toggleDisplayDaysEntries = () => {
-            if(displayDaysEntries) {
-                setDisplayDaysEntries(false)
+        const updateDaysNotToDisplay = (day, month) => {
+            const dayMonth = day.concat(` ${month}`)
+            if(daysNotToDisplay.findIndex(item => item === dayMonth)) {
+                setDaysNotToDisplay(daysNotToDisplay => [...daysNotToDisplay, dayMonth])
             } else {
-                setDisplayDaysEntries(true)
+                setDaysNotToDisplay(daysNotToDisplay.filter(item => item !== dayMonth))
             }
-            
-            // console.log('displayDaysEntries: ', displayDaysEntries)
         }
+
+        // const toggleDisplayDaysEntries = () => {
+        //     if(displayDaysEntries) {
+        //         setDisplayDaysEntries(false)
+        //     } else {
+        //         setDisplayDaysEntries(true)
+        //     }
+        //     console.log('displayDaysEntries: ', displayDaysEntries)
+        // }
 
         return(
             <View>
@@ -404,7 +166,7 @@ export default function EntriesView( param ) {
 
                     <TouchableOpacity 
                         style={styles.entriesScrollViewDayStampContainer}
-                        onPress={() => toggleDisplayDaysEntries()}
+                        onPress={() => updateDaysNotToDisplay(day, month)}
                     >
                         <Text style={styles.entriesScrollViewDayText}>{day.split(' ')[0].toUpperCase()}</Text>
                         <Text style={styles.entriesScrollViewDayText}>{day.split(' ')[1]}</Text>
@@ -415,7 +177,8 @@ export default function EntriesView( param ) {
                     </View>
 
                 </View>
-                { displayDaysEntries ? <View>{entriesDict[month][day].slice(0).reverse().map((entry) => mapEntriesToTable(entry, month, day))}</View> : null}
+                {/* { displayDaysEntries ? <View>{entriesDict[month][day].slice(0).reverse().map((entry) => mapEntriesToTable(entry, month, day))}</View> : null} */}
+                { !daysNotToDisplay.includes(day.concat(` ${month}`)) ? <View>{entriesDict[month][day].slice(0).reverse().map((entry) => mapEntriesToTable(entry, month, day))}</View> : null }
             </View>
         )
     }
@@ -438,7 +201,7 @@ export default function EntriesView( param ) {
 
     const mapEntriesToTable = (entry, month, day) => {
         // console.log('Entry from mapEntriesToTable: ', entry)
-        const navigation = useNavigation();
+        // const navigation = useNavigation();
         let translate = new Animated.Value(0)
 
         const handlePanGesture = Animated.event([{nativeEvent: {translationX: translate}}], {useNativeDriver: false})
@@ -525,6 +288,7 @@ export default function EntriesView( param ) {
 
                         <TouchableOpacity
                             style={styles.profileButton}
+                            onPress={() => navigation.navigate("ProfileView")}
                         >
                             <View style={styles.profileButtonBorder}>
                                 <MaterialCommunityIcons name="account" size={24} color="black" />
