@@ -15,19 +15,41 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Amplify, { Auth, loadingOverlay, Storage } from 'aws-amplify'
 
-export default function AudioEntryItem({ user, id, awsPath, awsClassificationPath, audioLink, count }) {
+export default function AudioEntryItem({ user, id, awsPath, awsClassificationPath, audioLink, count, title }) {
+
+    console.log('Title: ', title)
+    const entries = useSelector((state) => state.entry)
+    const thisEntry = entries.filter((entry) => entry.id === id)
+    const moodRating = thisEntry[0].moodRating
+    console.log('Mood Rating: ', moodRating)
+
+    const entryCount = awsPath.split('/')[3].split('.')[0].slice(-1)
 
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [sound, setSound] = React.useState();
     const [removedAsyncStorage, setRemovedAsyncStorage] = useState(false);
     
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const [scale, setScale] = useState(1)
     const [translateX, setTranslateX] = useState(0)
     const [showDeleteButton, setShowDeleteButton] = useState(false)
     const [flexDirection, setFlexDirection] = useState('column')
-    const navigation = useNavigation();
+
+    const setMoodColor = (moodRating) => {
+        if(moodRating === undefined){
+            return 'lightgrey'
+        } else {
+            const value = 1 - moodRating
+            //value from 0 to 1
+            var hue=((1-value)*120).toString(10);
+            return ["hsl(",hue,",100%,75%)"].join("");
+        } 
+    }
+    
+    const [entryMoodColor, setEntryMoodColor] = useState(setMoodColor(moodRating))
+
 
     const handleEntryItemPressIn = () => {
         setScale(0.95)
@@ -100,7 +122,7 @@ export default function AudioEntryItem({ user, id, awsPath, awsClassificationPat
     }
 
     const handleDeleteEntry = async(user) => {
-        dispatch(deleteEntry({
+        await dispatch(deleteEntry({
             id: id,
         }))
         
@@ -110,9 +132,9 @@ export default function AudioEntryItem({ user, id, awsPath, awsClassificationPat
         await Storage.remove(awsClassificationPath)
     }
 
-    const audioEntryItemExpanded = (id, audioLink, count) => {
+    const audioEntryItemExpanded = (id, audioLink, entryCount) => {
         if(translateX === 0) {
-            navigation.navigate('AudioEntryItemExpanded', {id, audioLink, count})
+            navigation.navigate('AudioEntryItemExpanded', {id, audioLink, entryCount})
         }
     }
 
@@ -134,6 +156,8 @@ export default function AudioEntryItem({ user, id, awsPath, awsClassificationPat
         }: undefined;
     }, [sound])
 
+
+
     return (
         <View style={[styles.entryItemContainer, {flexDirection: flexDirection}]}>
             
@@ -151,18 +175,20 @@ export default function AudioEntryItem({ user, id, awsPath, awsClassificationPat
             <Animated.View style={{flex: 0.8, transform: [{ translateX: 0 }, { scale: scale }] }}>
                 <TouchableWithoutFeedback
                     onPressIn={() => handleEntryItemPressIn()}
-                    onPress={() => audioEntryItemExpanded(id, audioLink, count)}
+                    onPress={() => audioEntryItemExpanded(id, audioLink, entryCount)}
                     onLongPress={() => handleEntryItemLongPress()}
                     onPressOut={() => handleEntryItemPressOut()}
                 >
-                    <View style={styles.audioEntryItemContainer}>
+                    <View style={[styles.audioEntryItemContainer, {backgroundColor: entryMoodColor}]}>
                         <View style={styles.audioEntryHeaderContainer}>
                             <View style={styles.timeStampContainer}>
                                 <Text>{moment(id).format('h:mm a').toUpperCase()}</Text>
                             </View>
                             <View style={styles.audioEntryHeaderTextContainer}>
                                 <View style={styles.audioEntryHeaderTitleContainer}>
-                                    <Text style={styles.audioEntryHeaderText}>{'Audio Entry ' + count}</Text>
+                                    <Text style={styles.audioEntryHeaderText}>
+                                        { title !== undefined ? {title} : `Audio Entry ${entryCount}` }
+                                    </Text>
                                 </View>
                             </View>    
                         </View>

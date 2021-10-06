@@ -2,13 +2,20 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, Alert, TextInput, Animated, Modal } from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useNavigation } from '@react-navigation/native'
 
-export default function MediaEntryHeader({changeMedia, media, audioButtonColor, videoButtonColor, textButtonColor }) {
+export default function MediaEntryHeader({changeMedia, setTitle, media, audioButtonColor, videoButtonColor, textButtonColor }) {
 
     const navigation = useNavigation();
+    const [titleText, setTitleText] = useState('')
+
+    const handleSetTitle = (text) => {
+        setTitleText(text)
+        setTitle(text)
+    }
 
     return (
         <View style={styles.MediaEntryHeaderContainer}>
@@ -21,7 +28,7 @@ export default function MediaEntryHeader({changeMedia, media, audioButtonColor, 
                         onPress={() => navigation.navigate('ProfileView')}
                     >
                         <View style={[styles.MediaButtonBorder, {backgroundColor: 'lightgrey'}]}>
-                            <MaterialCommunityIcons name="account" size={24} color="black" />
+                            <MaterialCommunityIcons name="account" size={30} color="black" />
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -34,7 +41,7 @@ export default function MediaEntryHeader({changeMedia, media, audioButtonColor, 
                         // onPress={() => handleMediaButtonPress('Audio')}
                     >
                         <View style={[styles.MediaButtonBorder, {backgroundColor: audioButtonColor}]}>
-                            <FontAwesome name={ Platform.OS === 'ios' ? "microphone" : 'md-micrphone'} size={20} color="black" />
+                            <FontAwesome name={ Platform.OS === 'ios' ? "microphone" : 'md-micrphone'} size={25} color="black" />
                         </View>
                     </TouchableOpacity>
                     
@@ -44,7 +51,8 @@ export default function MediaEntryHeader({changeMedia, media, audioButtonColor, 
                         // onPress={() => handleMediaButtonPress('Video')}
                     >
                         <View style={[styles.MediaButtonBorder, {backgroundColor: videoButtonColor}]}>
-                            <FontAwesome name={ Platform.OS === 'ios' ? "camera" : 'md-camera'} size={20} color="black" />
+                            <Ionicons name={ Platform.OS === 'ios' ? "ios-camera" : 'md-camera'} size={30} color="black" />
+                            {/* <FontAwesome name={ Platform.OS === 'ios' ? "camera" : 'md-camera'} size={20} color="black" /> */}
                         </View>
                     </TouchableOpacity>
 
@@ -54,7 +62,7 @@ export default function MediaEntryHeader({changeMedia, media, audioButtonColor, 
                         // onPress={() => handleMediaButtonPress('Text')}
                     >
                         <View style={[styles.MediaButtonBorder, {backgroundColor: textButtonColor}]}>
-                            <FontAwesome name={ Platform.OS === 'ios' ? "pencil" : 'md-pencil'} size={20} color="black" />
+                            <FontAwesome name={ Platform.OS === 'ios' ? "pencil" : 'md-pencil'} size={25} color="black" />
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -63,8 +71,8 @@ export default function MediaEntryHeader({changeMedia, media, audioButtonColor, 
                 <TextInput
                     style={styles.MediaEntryHeaderTitle}
                     placeholder={media + ' Entry Title'}
-                    // onChangeText={titleText => setTitleText(titleText)}
-                    // value={titleText}
+                    onChangeText={(text) => handleSetTitle(text)}
+                    value={titleText}
                 ></TextInput>
             </View>
 

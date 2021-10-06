@@ -5,16 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Import libraries for Redux
 import { useDispatch, useSelector } from 'react-redux';
-// import ReduxThunk from 'redux-thunk'
 import { addEntry } from './../Redux/entrySlice';
-import { updatePersisted } from './../Redux/persistedSlice';
-import { add } from 'react-native-reanimated';
 
-export default async function AsyncStorageGet() {
-
+export default async function AsyncStorageGet( user ) {
+    console.log('User: ', user)
+    console.log('In AsyncStorageGet')
     const dispatch = useDispatch()
-
+    console.log('After dispatch initailized.')
     try {
+        console.log('In AsyncStorageGet Try statement')
         const allKeys = await AsyncStorage.getAllKeys()
         // console.log('All Keys: ', allKeys)
         const entryKeys = allKeys.filter(key => /^\d+$/.test(key)).sort()
@@ -24,7 +23,8 @@ export default async function AsyncStorageGet() {
         for(let i = 0; i < entryKeys.length; i++) {                    
             const entryDataStringify = await AsyncStorage.getItem(entryKeys[i])
             const entryData = JSON.parse(entryDataStringify)
-            console.log(`Username for entry ${i}: ${entryData.username}`)
+            console.log('User: ', user)
+            console.log('Username: ', entryData.username)
             dispatch(addEntry({
                 id: entryData.id,
                 username: entryData.username,
@@ -56,4 +56,5 @@ export default async function AsyncStorageGet() {
     } catch (error) {
         console.log('Error getting keys from AsyncStorage: ', error)
     }
+    console.log('Here after the try')
 }

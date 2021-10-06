@@ -26,16 +26,17 @@ export default function TextEntryView({changeMedia, media, username}) {
     const [id, setID] = useState('')
     const [titleText, setTitleText] = useState('')
     const [entryText, setEntryText] = useState('')
-    const [textUploadCounter, setTextUploadCounter] = useState(0)
     const dispatch = useDispatch();
     const entries = useSelector((state) => state.entry);
-
+    const textEntryCount = entries.reduce((numberOfTextEntries, entry) => ((entry.type === 'text') ? numberOfTextEntries+1 : numberOfTextEntries), 0)
+    // const [textUploadCounter, setTextUploadCounter] = useState(textEntryCount+1)
+    textUploadCounter = textEntryCount + 1
     const navigation = useNavigation();
 
     let entryObject = {}
 
     let entryData = {
-        'id': undefined, 
+        'id': undefined,
         'username': undefined, 
         'awsPath': undefined, 
         'type': undefined, 
@@ -72,6 +73,7 @@ export default function TextEntryView({changeMedia, media, username}) {
         // AsyncStorage.clear()
         AsyncStorageSave(entryData, entryData['id'].toString())
         AsyncStorageGet()
+
         if( entryText !== ''){
             dispatch(addEntry({
                 id: Date.now(),
@@ -89,7 +91,8 @@ export default function TextEntryView({changeMedia, media, username}) {
     const saveEntryAWS = async() => {
         const path = 'Entries/' + username + '/Text/text' + textUploadCounter.toString() + '.txt'
         const result = await Storage.put(path, entryText)
-        setTextUploadCounter(textUploadCounter + 1)
+        // setTextUploadCounter(textUploadCounter + 1)
+        textUploadCounter + 1
     }
 
     const classifyEntry = (entry, path) => {

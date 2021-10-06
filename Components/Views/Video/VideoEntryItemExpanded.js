@@ -18,7 +18,7 @@ export default function VideoEntryItemExpanded(params) {
 
     const id = params.route.params.id
     const videoLink = params.route.params.videoLink
-    const count = params.route.params.count
+    const count = params.route.params.entryCount
     const width = Dimensions.get('window').width
     const height = Dimensions.get('window').height
     const ratio = width/height
@@ -86,13 +86,24 @@ export default function VideoEntryItemExpanded(params) {
             </View>
 
             <View style={[styles.videoEntryVideoContainer, {height: height*ratio*0.8, width: width*0.8 }]}>
+                {/* <VideoPlayer
+                    style={[styles.videoContainer, {height: height*ratio, width: width*0.8 }]}
+                    videoProps={{
+                        shouldPlay: true,
+                        resizeMode: Video.RESIZE_MODE_COVER,
+                        source: {
+                            uri: videoLink
+                        }
+                    }}   
+                /> */}
                 <Video
                     ref={video}
                     style={[styles.videoContainer, {height: height*ratio, width: width*0.8 }]}
                     source={{uri: videoLink}}
                     resizeMode="cover"
                     onPlaybackStatusUpdate={status => setStatus(() => status)}
-                    useNativeControls
+                    useNativeControls={true}
+                    playFromPositionAsync={0}
                 >
                 </Video>
                 {/* <View style={styles.videoEntryPlayButtonContainer}>

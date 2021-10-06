@@ -15,7 +15,7 @@ export default function TextEntryItemExpanded(params) {
 
     const id = params.route.params.id
     const TextLink = params.route.params.TextLink
-    const count = params.route.params.count
+    const count = params.route.params.entryCount
 
     const navigation = useNavigation();
 

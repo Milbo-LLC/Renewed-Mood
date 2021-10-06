@@ -30,10 +30,12 @@ export default function SignUpView({ navigation }) {
 
     const [maleButtonScale, setMaleButtonScale] = useState(1)
     const [femaleButtonScale, setFemaleButtonScale] = useState(1)
-    const [neitherButtonScale, setNeitherButtonScale] = useState(1)
+    const [nonbinaryButtonScale, setNonbinaryButtonScale] = useState(1)
+    const [ratherNotSayButtonScale, setRatherNotSayButtonScale] = useState(1)
     const [maleButtonColor, setMaleButtonColor] = useState('lightgrey')
     const [femaleButtonColor, setFemaleButtonColor] = useState('lightgrey')
-    const [neitherButtonColor, setNeitherButtonColor] = useState('lightgrey')
+    const [nonbinaryButtonColor, setNonbinaryButtonColor] = useState('lightgrey')
+    const [ratherNotSayButtonColor, setRatherNotSayButtonColor] = useState('lightgrey')
 
     const [signUpStage, setSignUpStage] = useState(0)
 
@@ -131,8 +133,11 @@ export default function SignUpView({ navigation }) {
             setMaleButtonScale(0.9)
         } else if(gender === 'female'){
             setFemaleButtonScale(0.9)
-        } else {
-            setNeitherButtonScale(0.9)
+        } else if(gender === 'non-binary'){
+            setNonbinaryButtonScale(0.9)
+        }
+        else {
+            setRatherNotSayButtonScale(0.9)
         }
     }
 
@@ -142,7 +147,8 @@ export default function SignUpView({ navigation }) {
             if(maleButtonColor === 'lightgrey'){
                 setMaleButtonColor('#0EC27D')
                 setFemaleButtonColor('lightgrey')
-                setNeitherButtonColor('lightgrey')
+                setNonbinaryButtonColor('lightgrey')
+                setRatherNotSayButtonColor('lightgrey')
                 setGender('male')
             } else {
                 setMaleButtonColor('lightgrey')
@@ -153,21 +159,35 @@ export default function SignUpView({ navigation }) {
             if(femaleButtonColor === 'lightgrey'){
                 setFemaleButtonColor('#0EC27D')
                 setMaleButtonColor('lightgrey')
-                setNeitherButtonColor('lightgrey')
+                setNonbinaryButtonColor('lightgrey')
+                setRatherNotSayButtonColor('lightgrey')
                 setGender('female')
             } else {
                 setFemaleButtonColor('lightgrey')
                 setGender('undefined')
             }
-        } else {
-            setNeitherButtonScale(1)
-            if(neitherButtonColor === 'lightgrey'){
-                setNeitherButtonColor('#0EC27D')
+        } else if(gender === 'non-binary'){
+            setNonbinaryButtonScale(1)
+            if(nonbinaryButtonColor === 'lightgrey'){
+                setNonbinaryButtonColor('#0EC27D')
+                setFemaleButtonColor('lightgrey')
+                setMaleButtonColor('lightgrey')
+                setRatherNotSayButtonColor('lightgrey')
+                setGender('non-binary')
+            } else {
+                setNonbinaryButtonColor('lightgrey')
+                setGender('undefined')
+            }
+        }  else {
+            setRatherNotSayButtonScale(1)
+            if(ratherNotSayButtonColor === 'lightgrey'){
+                setRatherNotSayButtonColor('#0EC27D')
+                setNonbinaryButtonColor('lightgrey')
                 setMaleButtonColor('lightgrey')
                 setFemaleButtonColor('lightgrey')
-                setGender('neither')
+                setGender('rather-not-say')
             } else {
-                setNeitherButtonColor('lightgrey')
+                setRatherNotSayButtonColor('lightgrey')
                 setGender('undefined')
             }
         }
@@ -278,12 +298,25 @@ export default function SignUpView({ navigation }) {
                                     </View>
                                 </TouchableWithoutFeedback>
 
+                            </View>
+                            <View style={styles.genderButtonsContainer}>
                                 <TouchableWithoutFeedback
-                                    onPressIn={() => handleButtonPressIn('neither')}
-                                    onPressOut={() => handleButtonPressOut('neither')}
+                                    onPressIn={() => handleButtonPressIn('non-binary')}
+                                    onPressOut={() => handleButtonPressOut('non-binary')}
                                 >
                                     <View
-                                        style={[styles.genderButton, { transform: [{scale: neitherButtonScale}], backgroundColor: neitherButtonColor  }]}
+                                        style={[styles.genderButton, { transform: [{scale: nonbinaryButtonScale}], backgroundColor: nonbinaryButtonColor  }]}
+                                    >
+                                        <Text style={styles.genderButtonText}>Non-binary</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback
+                                    onPressIn={() => handleButtonPressIn('rather-not-say')}
+                                    onPressOut={() => handleButtonPressOut('rather-not-say')}
+                                >
+                                    <View
+                                        style={[styles.genderButton, { transform: [{scale: ratherNotSayButtonScale}], backgroundColor: ratherNotSayButtonColor  }]}
                                     >
                                         <Text style={styles.genderButtonText}>Rather not say</Text>
                                     </View>
@@ -682,10 +715,10 @@ const styles = StyleSheet.create({
     },
 
     genderButton: {
-        width: '30%',
+        width: '40%',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 10,
+        paddingVertical: 20,
         borderRadius: 10,
         backgroundColor: 'lightgrey'
     },

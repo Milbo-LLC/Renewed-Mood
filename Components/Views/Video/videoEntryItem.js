@@ -18,6 +18,11 @@ import Amplify, { Auth, loadingOverlay, Storage } from 'aws-amplify'
 
 export default function VideoEntryItem({ user: user, id: id, awsPath: awsPath, awsClassificationPath, title: title, videoLink: videoLink, count, angerFearSlider: angerFearSlider, anticipationSurpriseSlider: anticipationSurpriseSlider, joySadnessSlider: joySadnessSlider, disgustTrustSlider: disgustTrustSlider  }) {
     const video = React.useRef(null);
+
+    const entries = useSelector((state) => state.entry)
+    const thisEntry = entries.filter((entry) => entry.id === id)
+    const moodRating = thisEntry[0].moodRating
+
     const [status, setStatus] = React.useState({});
     const [removedAsyncStorage, setRemovedAsyncStorage] = useState(false);
 
@@ -28,6 +33,21 @@ export default function VideoEntryItem({ user: user, id: id, awsPath: awsPath, a
     const [showDeleteButton, setShowDeleteButton] = useState(false)
     const [flexDirection, setFlexDirection] = useState('column')
     const navigation = useNavigation();
+
+    const setMoodColor = (moodRating) => {
+        if(moodRating === undefined){
+            return 'lightgrey'
+        } else {
+            const value = 1 - moodRating
+            //value from 0 to 1
+            var hue=((1-value)*120).toString(10);
+            return ["hsl(",hue,",100%,75%)"].join("");
+        } 
+    }
+    
+    const [entryMoodColor, setEntryMoodColor] = useState(setMoodColor(moodRating))
+
+    const entryCount = awsPath.split('/')[3].split('.')[0].slice(-1)
 
     const handleEntryItemPressIn = () => {
         setScale(0.95)
@@ -108,9 +128,9 @@ export default function VideoEntryItem({ user: user, id: id, awsPath: awsPath, a
         await Storage.remove(awsClassificationPath)
     }
 
-    const videoEntryItemExpanded = (id, videoLink, count) => {
+    const videoEntryItemExpanded = (id, videoLink, entryCount) => {
         if(translateX === 0) {
-            navigation.navigate('VideoEntryItemExpanded', {id, videoLink, count})
+            navigation.navigate('VideoEntryItemExpanded', {id, videoLink, entryCount})
         }
     }
 
@@ -146,11 +166,11 @@ export default function VideoEntryItem({ user: user, id: id, awsPath: awsPath, a
                 
                 <TouchableWithoutFeedback 
                     onPressIn={() => handleEntryItemPressIn()}
-                    onPress={() => videoEntryItemExpanded(id, videoLink, count)}
+                    onPress={() => videoEntryItemExpanded(id, videoLink, entryCount)}
                     onLongPress={() => handleEntryItemLongPress()}
                     onPressOut={() => handleEntryItemPressOut()}
                 >
-                    <View style={styles.videoEntryItemContainer}>
+                    <View style={[styles.videoEntryItemContainer, {backgroundColor: entryMoodColor}]}>
                         <View style={styles.videoEntryHeaderContainer}>
                             <View style={styles.timeStampContainer}>
                                 {/* <Text style={styles.dateStampText}>{Date(id).substring(0,3)}</Text> */}
@@ -160,7 +180,7 @@ export default function VideoEntryItem({ user: user, id: id, awsPath: awsPath, a
                             <View style={styles.videoEntryHeaderTextContainer}>
                                 <View style={styles.videoEntryHeaderTitleContainer}>
                                     {/* <Text style={styles.videoEntryHeaderText}>{title}</Text> */}
-                                    <Text style={styles.videoEntryHeaderText}>{'Video Entry ' + count}</Text>
+                                    <Text style={styles.videoEntryHeaderText}>{'Video Entry ' + entryCount}</Text>
                                 </View>
                                 <View style={styles.videoEntryHeaderAuthorContainer}>
                                     {/* <Text style={styles.videoEntryHeaderText}>{author}</Text> */}

@@ -74,7 +74,7 @@ export default function MainView( username ) {
             //width={Dimensions.get('window').width}
           >
             <View style={styles.EntriesViewContainer}>
-                <EntriesView param={username}></EntriesView>
+                <EntriesView params={{username: username, displayAudioEntries: true, displayVideoEntries: true, displayTextEntries: true}}></EntriesView>
             </View>
             <View style={styles.VideoEntryViewContainer}>
                 <MediaEntryViews param={username}></MediaEntryViews>

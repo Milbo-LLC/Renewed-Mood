@@ -24,9 +24,16 @@ import { set, Value } from 'react-native-reanimated';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import AsyncStorageGet from '../../AsyncStorage/AsyncStorageGet';
 
-export default function EntriesView( param ) {
-    // console.log('param in EntriesView: ', param)
-    let audioEntryCount = 0, videoEntryCount = 0, textEntryCount = 0
+export default function EntriesView( params ) {
+
+    console.log('params in EntriesView: ', params)
+
+    let entriesDict = {}
+    const entries = useSelector((state) => state.entry);
+    const audioEntryCount = entries.reduce((numberOfAudioEntries, entry) => ((entry.type === 'audio') ? numberOfAudioEntries+1 : numberOfAudioEntries), 0)
+    const videoEntryCount = entries.reduce((numberOfVideoEntries, entry) => ((entry.type === 'video') ? numberOfVideoEntries+1 : numberOfVideoEntries), 0)
+    const textEntryCount = entries.reduce((numberOfTextEntries, entry) => ((entry.type === 'text') ? numberOfTextEntries+1 : numberOfTextEntries), 0)
+    // let audioEntryCount = numberOfAudioEntries, videoEntryCount = numberOfVideoEntries, textEntryCount = numberOfTextEntries
     let dayCount = 0
     let audioEntryList = [], videoEntryList = [], textEntryList = []
     let monthsWithEntries = new Set()
@@ -38,24 +45,36 @@ export default function EntriesView( param ) {
     // daysWithEntries.add('Tue 21 - September 2021')
     // daysWithEntries.add('Sat 25 - September 2021')
     // daysWithEntries.add('Sun 19 - September 2021')
-    let entriesDict = {}
-    const entries = useSelector((state) => state.entry);
-    // console.log('Entries from top of EntriesView: ', entries)
+    
+    console.log('Number of Audio Entries: ', audioEntryCount)
+    console.log('Number of Video Entries: ', videoEntryCount)
+    console.log('Number of Text Entries: ', textEntryCount)
+    // console.log('Number of Text Entries: ', numberOfTextEntries)
+    // console.log('\n\nEntries from top of EntriesView: ', entries, '\n\n')
     // console.log('\n\n', param.route.params.username, '\n\n')
     // let username = undefined
 
     let username = ''
     try {
-        username = param.param.route.params.username
+        username = params.username.route.params.username
+        // setDisplayAudioEntries(true)
+        // setDisplayVideoEntries(true)
+        // setDisplayTextEntries(true)
     } catch(error) {
         console.log('Error is param.param.route.params.username: ', error)
-        username = param.route.params.username
+        // username = param.route.params.username
+        username = ''
     }
     
     // console.log('entries: ', entries)
     const [entriesShowing, setEntriesShowing] = useState(entries)
     const [displayDaysEntries, setDisplayDaysEntries] = useState(true)
     const [daysNotToDisplay, setDaysNotToDisplay] = useState([])
+    
+    const [displayAudioEntries, setDisplayAudioEntries] = useState(true)
+    const [displayVideoEntries, setDisplayVideoEntries] = useState(true)
+    const [displayTextEntries, setDisplayTextEntries] = useState(true)
+
     const [dataPersisted, setDataPersisted] = useState({})
     
     const [rerender, setRerender] = useState(0)
@@ -77,13 +96,13 @@ export default function EntriesView( param ) {
         monthsWithEntries.add(moment(entries[i].id).format('MMMM YYYY'))
         daysWithEntries.add(moment(entries[i].id).format('ddd DD - MMMM YYYY'))
         if(entries[i].type === 'audio') {
-            audioEntryCount++
+            // audioEntryCount++
             audioEntryList.push(entries[i])
         } else if(entries[i].type === 'video') {
-            videoEntryCount++
+            // videoEntryCount++
             videoEntryList.push(entries[i])
         } else {
-            textEntryCount++
+            // textEntryCount++
             textEntryList.push(entries[i])
         }
     }
@@ -124,6 +143,27 @@ export default function EntriesView( param ) {
 
     monthsWithEntries.forEach((month) => daysThisMonth(month, monthsWithEntries))
     
+    const updateEntriesShowing = (list) => {
+        setDaysNotToDisplay([])
+        if(list === 'entries') {
+            setDisplayAudioEntries(true)
+            setDisplayVideoEntries(true)
+            setDisplayTextEntries(true)
+        } else if(list === 'audioEntryList') {
+            setDisplayAudioEntries(true)
+            setDisplayVideoEntries(false)
+            setDisplayTextEntries(false)
+        } else if(list === 'videoEntryList') {
+            setDisplayAudioEntries(false)
+            setDisplayVideoEntries(true)
+            setDisplayTextEntries(false)
+        } else if(list === 'textEntryList') {
+            setDisplayAudioEntries(false)
+            setDisplayVideoEntries(false)
+            setDisplayTextEntries(true)
+        }
+    }
+
     // const updateEntriesShowing = (list) => {
     //     if(list === 'entries'){
     //         setEntriesShowing(entries)
@@ -200,7 +240,7 @@ export default function EntriesView( param ) {
     }
 
     const mapEntriesToTable = (entry, month, day) => {
-        // console.log('Entry from mapEntriesToTable: ', entry)
+        console.log('Entry from mapEntriesToTable: ', entry)
         // const navigation = useNavigation();
         let translate = new Animated.Value(0)
 
@@ -223,55 +263,46 @@ export default function EntriesView( param ) {
         // const handleEntryItemPress = (id, entry, count) => {
         //     navigation.navigate('TextEntryItemExpanded', {id, entry, count})
         // }
-        if(entry.type === 'text'){
+        if(entry.type === 'text' && displayTextEntries){
             // console.log('Entry.awsPath: ', entry.awsPath)
             return (
-                <View style={styles.entryItemContainer}>
-
-                    <View style={styles.entryItemConnectorContainer}>
-                        <View style={styles.entryItemConnectorTop}></View>
-                        <Feather name="file-text" size={20} color="black" style={{alignSelf: 'center'}}/>
-                        <View style={styles.entryItemConnectorBottom}></View>
+                    <View style={styles.entryItemContainer}>
+                        <View style={styles.entryItemConnectorContainer}>
+                            <View style={styles.entryItemConnectorTop}></View>
+                            <Feather name="file-text" size={20} color="black" style={{alignSelf: 'center'}}/>
+                            <View style={styles.entryItemConnectorBottom}></View>
+                        </View>
+                        <View style={styles.entryItemItemContainer}>
+                            <TextEntryItem user={entry.user} entriesDict={entriesDict} month={month} day={day} key={entry.id} id={entry.id} awsPath={entry.awsPath} awsClassificationPath={awsClassificationPath} title={entry.title} entry={entry.entry} count={textEntryCount}></TextEntryItem>
+                        </View>
                     </View>
-
-                    <View style={styles.entryItemItemContainer}>
-                        <TextEntryItem user={entry.user} entriesDict={entriesDict} month={month} day={day} key={entry.id} id={entry.id} awsPath={entry.awsPath} awsClassificationPath={awsClassificationPath} title={entry.title} entry={entry.entry} count={textEntryCount}></TextEntryItem>
-                    </View>
-
-                </View>
             )
-        } else if(entry.type === 'video') {
+        } else if(entry.type === 'video' && displayVideoEntries) {
             // console.log('Entry.awsPath: ', entry.awsPath)
             return (
                 <View style={styles.entryItemContainer}>
-
                     <View style={styles.entryItemConnectorContainer}>
                         <View style={styles.entryItemConnectorTop}></View>
                         <Entypo name="video" size={20} color="black" style={{alignSelf: 'center'}}/>
                         <View style={styles.entryItemConnectorBottom}></View>
                     </View>
-
                     <View style={styles.entryItemItemContainer}>
                         <VideoEntryItem user={entry.user} key={entry.id} id={entry.id} awsPath={entry.awsPath} awsClassificationPath={awsClassificationPath} title={entry.title} videoLink={entry.entry} count={videoEntryCount} angerFearSlider={entry.angerFearSlider} anticipationSurpriseSlider={entry.anticipationSurpriseSlider} joySadnessSlider={entry.joySadnessSlider} disgustTrustSlider={entry.disgustTrustSlider}></VideoEntryItem>
-                </View>
-                
+                    </View>
                 </View>
             )
-        } else if(entry.type === 'audio') {
+        } else if(entry.type === 'audio' && displayAudioEntries) {
             // console.log('Entry.awsPath: ', entry.awsPath)
             return (
                 <View style={styles.entryItemContainer}>
-
                     <View style={styles.entryItemConnectorContainer}>
                         <View style={styles.entryItemConnectorTop}></View>
                         <MaterialIcons name="multitrack-audio" size={20} color="black" style={{alignSelf: 'center'}}/>
                         <View style={styles.entryItemConnectorBottom}></View>
                     </View>
-                    
                     <View style={styles.entryItemItemContainer}>
                         <AudioEntryItem user={entry.user} key={entry.id} id={entry.id} awsPath={entry.awsPath} awsClassificationPath={awsClassificationPath} title={entry.title} audioLink={entry.entry} count={audioEntryCount}></AudioEntryItem>
                     </View>
-
                 </View>
                 
             )

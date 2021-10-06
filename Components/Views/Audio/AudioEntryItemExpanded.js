@@ -17,7 +17,7 @@ export default function AudioEntryItemExpanded(params) {
 
     const id = params.route.params.id
     const audioLink = params.route.params.audioLink
-    const count = params.route.params.count
+    const count = params.route.params.entryCount
 
     const width = Dimensions.get('window').width
     const height = Dimensions.get('window').height

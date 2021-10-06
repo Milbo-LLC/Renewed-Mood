@@ -28,13 +28,17 @@ export default function AudioEntryView({changeMedia, media, username}) {
 
     const navigation = useNavigation();
 
+    const entries = useSelector((state) => state.entry);
+    const audioEntryCount = entries.reduce((numberOfAudioEntries, entry) => ((entry.type === 'audio') ? numberOfAudioEntries+1 : numberOfAudioEntries), 0)
+
     const [recording, setRecording] = useState();
     const [recordButtonInsideScale, setRecordButtonInsideScale] = useState(1)
     const [recordButtonInsideBorderRadius, setRecordButtonInsideBorderRadius] = useState(100)
     // const [uri, setUri] = React.useState();
     const [audioLink, setAudioLink] = useState();
 
-    const [audioUploadCounter, setAudioUploadCounter] = useState(0)
+    // const [audioUploadCounter, setAudioUploadCounter] = useState(audioEntryCount+1)
+    const audioUploadCounter = audioEntryCount + 1
 
     const [timer, setTimer] = useState(0);
 //   const [sound, setSound] = React.useState();
@@ -103,7 +107,6 @@ export default function AudioEntryView({changeMedia, media, username}) {
 
 
     const dispatch = useDispatch();
-    const entries = useSelector((state) => state.entries);
 
     const saveAudioEntry = (uri, awsPath) => {
         entryData['id'] = Date.now(),
@@ -125,6 +128,10 @@ export default function AudioEntryView({changeMedia, media, username}) {
             type: 'audio',
             entry: uri,
         }))
+    }
+
+    const handleSetTitle = (title) => {
+        setTitleText(title)
     }
 
     const classifyAudio = (uri, path) => {
@@ -203,7 +210,8 @@ export default function AudioEntryView({changeMedia, media, username}) {
             contentType: 'audio/mp3'
         });
 
-        setAudioUploadCounter(audioUploadCounter + 1)
+        audioUploadCounter + 1
+        // setAudioUploadCounter(audioUploadCounter + 1)
         console.log('GET PATH: Entries/' + username + '/Audio/')
         console.log(await Storage.get(path, { download: true }))
     }
@@ -213,9 +221,10 @@ export default function AudioEntryView({changeMedia, media, username}) {
         
             <View style={styles.audioEntryContainer}> 
                 <View style={styles.AudioEntryHeaderContainer}>
-                    <MediaEntryHeader 
+                    <MediaEntryHeader
                         changeMedia={changeMedia} 
-                        media={media} 
+                        setTitle={handleSetTitle}
+                        media={media}
                         audioButtonColor={'red'}
                         videoButtonColor={'lightgrey'}
                         textButtonColor={'lightgrey'}

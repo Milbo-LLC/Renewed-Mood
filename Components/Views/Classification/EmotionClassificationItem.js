@@ -31,6 +31,8 @@ export default function EmotionClassificationItem({ emotions, type, username, ti
     let intensityWord = ''
     let noteQuestion = ''
 
+    const [sliderValue, setSliderValue] = useState(0)
+
     const [currentEmotion, setCurrentEmotion] = useState(0)
     const [emotionNote, setEmotionNote] = useState('')
     
@@ -92,6 +94,7 @@ export default function EmotionClassificationItem({ emotions, type, username, ti
     }
 
     const updateSliderValue = (value, emotion) => {
+        setSliderValue(value)
         if(emotions[currentEmotion] === 'Joy') {
             setJoyIntensity(value)
             console.log('joyIntensity: ', joyIntensity)
@@ -276,6 +279,8 @@ export default function EmotionClassificationItem({ emotions, type, username, ti
     }
 
     const handleEnterButton = () => {
+        setSliderValue(0)
+        setEmotionNote('')
         setCurrentEmotion(currentEmotion+1)
     }
         
@@ -285,6 +290,7 @@ export default function EmotionClassificationItem({ emotions, type, username, ti
             <Text style={styles.EmotionClassificationHeaderText}>How intense is your feeling of {intensityWord}?</Text>
             <Slider
                 onValueChange={(value) => updateSliderValue(value, emotions[currentEmotion])}
+                value={sliderValue}
                 style={styles.EmotionClassificationSlider}
             ></Slider>
             <Text style={styles.EmotionClassificationHeaderText}>{noteQuestion}</Text>

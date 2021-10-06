@@ -35,20 +35,23 @@ import AsyncStorageGet from '../../AsyncStorage/AsyncStorageGet';
 export default function VideoEntryView({changeMedia, media, username}) {
     
     const navigation = useNavigation();
+
+    const entries = useSelector((state) => state.entry);
+    const videoEntryCount = entries.reduce((numberOfVideoEntries, entry) => ((entry.type === 'video') ? numberOfVideoEntries+1 : numberOfVideoEntries), 0)
     
     const [hasPermission, setHasPermission] = useState(null)
     const [type, setType] = useState(Camera.Constants.Type.front)
     const [recording, setRecording] = useState(false)
     const [cameraRef, setCameraRef] = useState(false)
     const [videoLink, setVideoLink] = useState('')
-    const [videoUploadCounter, setVideoUploadCounter] = useState(0)
+    // const [videoUploadCounter, setVideoUploadCounter] = useState(videoEntryCount+1)
+    videoUploadCounter = videoEntryCount + 1
     const [titleText, setTitleText] = useState('')
     const [authorText, setAuthorText] = useState('')
     const [isPlaying, setIsPlaying] = React.useState(false)
     const [counterHidden, setCounterHidden] = React.useState(true)
     const [classificationScreenEnabled, setClassificationScreenEnabled] = React.useState(false)
     const dispatch = useDispatch();
-    const entries = useSelector((state) => state.entries);
     const classifier = useSelector((state) => state.classifier);
     const [classifierPage, setClassifierPage] = useState(0)
 
@@ -191,7 +194,8 @@ export default function VideoEntryView({changeMedia, media, username}) {
                 result = await Storage.put(path, videoDataBlob, {
                     contentType: 'video/mp4'
                 })
-                setVideoUploadCounter(videoUploadCounter + 1)
+                videoUploadCounter + 1
+                // setVideoUploadCounter(videoUploadCounter + 1)
             }
             
         }
@@ -260,7 +264,7 @@ export default function VideoEntryView({changeMedia, media, username}) {
                                 )
                             }}
                         >
-                            <Ionicons name={ Platform.OS === 'ios' ? "ios-camera-reverse" : 'md-camera-reverse'} size={40} color="white" />
+                            <Ionicons name={ Platform.OS === 'ios' ? "ios-camera-reverse" : 'md-camera-reverse'} size={35} color="black" />
                             {/* <Text style={styles.text}> Flip </Text> */}
                         </TouchableOpacity>
                     </View>
@@ -339,6 +343,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-end',
         padding: 10,
+        paddingHorizontal: 20,
     },
     cameraFlipButton: {
 

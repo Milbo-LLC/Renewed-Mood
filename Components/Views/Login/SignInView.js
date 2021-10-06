@@ -75,6 +75,11 @@ export default function SignInView({ navigation }) {
     // }
 
     const handleAWSSignIn = async() => {
+        // if(entriesInRedux.length === 0) {
+        //     console.log('Username from SignInView: ', username);
+        //     console.log('About to go into AsyncStorageGet');
+        //     AsyncStorageGet(username)
+        // }
         try {
             await Auth.signIn(username, password)
             console.log('Successfully signed in.')
@@ -102,11 +107,13 @@ export default function SignInView({ navigation }) {
     // }
 
     console.log('Number of entries in entriesInRedux: ', entriesInRedux.length)
+    
     if(entriesInRedux.length === 0) {
-        AsyncStorageGet()
+        console.log('Username from SignInView: ', username);
+        console.log('About to go into AsyncStorageGet');
+        AsyncStorageGet(username)
     }
     
-
     return(
 
         <View style={styles.SignInViewContainer}>

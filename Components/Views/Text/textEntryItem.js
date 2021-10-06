@@ -15,6 +15,12 @@ import Amplify, { Auth, loadingOverlay, Storage } from 'aws-amplify'
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 const TextEntryItem = ({ user, entriesDict, month, day, id, awsPath, awsClassificationPath, title, author, entry, count }) => {
+    
+    const entries = useSelector((state) => state.entry)
+    const thisEntry = entries.filter((entry) => entry.id === id)
+    const moodRating = thisEntry[0].moodRating
+    
+    
     const [scale, setScale] = useState(1)
     const [translateX, setTranslateX] = useState(0)
     const [showDeleteButton, setShowDeleteButton] = useState(false)
@@ -22,8 +28,22 @@ const TextEntryItem = ({ user, entriesDict, month, day, id, awsPath, awsClassifi
     const [removedAsyncStorage, setRemovedAsyncStorage] = useState(false);
     const navigation = useNavigation();
 
+    const setMoodColor = (moodRating) => {
+        if(moodRating === undefined){
+            return 'lightgrey'
+        } else {
+            const value = 1 - moodRating
+            //value from 0 to 1
+            var hue=((1-value)*120).toString(10);
+            return ["hsl(",hue,",100%,75%)"].join("");
+        } 
+    }
+    
+    const entryCount = awsPath.split('/')[3].split('.')[0].slice(-1)
+
+    const [entryMoodColor, setEntryMoodColor] = useState(setMoodColor(moodRating))
+
     const dispatch = useDispatch();
-    const entries = useSelector((state) => state.entry);
     
     const handleEntryItemPressIn = () => {
         setScale(0.95)
@@ -110,9 +130,9 @@ const TextEntryItem = ({ user, entriesDict, month, day, id, awsPath, awsClassifi
     //     // dispatch(deleteEntry({id: id}))
     // }
     
-    const textEntryItemExpanded = (id, TextLink, count) => {
+    const textEntryItemExpanded = (id, TextLink, entryCount) => {
         if(translateX === 0) {
-            navigation.navigate('TextEntryItemExpanded', {id, entry, count})
+            navigation.navigate('TextEntryItemExpanded', {id, entry, entryCount})
         }
     }
     
@@ -134,12 +154,12 @@ const TextEntryItem = ({ user, entriesDict, month, day, id, awsPath, awsClassifi
                 
                 <TouchableWithoutFeedback
                     onPressIn={() => handleEntryItemPressIn()}
-                    onPress={() => textEntryItemExpanded(id, entry, count)}
+                    onPress={() => textEntryItemExpanded(id, entry, entryCount)}
                     onLongPress={() => handleEntryItemLongPress()}
                     onPressOut={() => handleEntryItemPressOut()}
                     
                 >
-                    <View style={styles.textEntryItemContainer}>
+                    <View style={[styles.textEntryItemContainer, {backgroundColor: entryMoodColor}]}>
                         <View style={styles.textEntryHeaderContainer}>
                             <View style={styles.timeStampContainer}>
                                 {/* <Text style={styles.dateStampText}>{Date(id).substring(0,3)}</Text> */}
@@ -149,7 +169,7 @@ const TextEntryItem = ({ user, entriesDict, month, day, id, awsPath, awsClassifi
                             <View style={styles.textEntryHeaderTextContainer}>
                                 <View style={styles.textEntryHeaderTitleContainer}>
                                     {/* <Text style={styles.textEntryHeaderText}>{title}</Text> */}
-                                    <Text style={styles.textEntryHeaderText}>{'Text Entry ' + count}</Text>
+                                    <Text style={styles.textEntryHeaderText}>{'Text Entry ' + entryCount}</Text>
                                 </View>
                             </View>    
                         </View>
